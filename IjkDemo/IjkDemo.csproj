@@ -140,7 +140,6 @@
     <ProjectReference Include="..\Ijkplayer.iOS.UI\Ijkplayer.iOS.UI\Ijkplayer.iOS.UI.csproj">
       <Project>{E40B1664-FF73-43DE-91D3-41CF4957A2E9}</Project>
       <Name>Ijkplayer.iOS.UI</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
