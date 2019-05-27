@@ -8,12 +8,35 @@ namespace IjkDemo
     public partial class ViewController : UIViewController
     {
         private ZFPlayerController player;
-        private UIView containerView;
-        private ZFPlayerControlView controlView;
-        private UIButton playBtn;
-        private UIButton changeBtn;
-        private UIButton nextBtn;
-        private NSUrl[] assetURLs;
+
+        private UIView containerView = new UIView() {
+            BackgroundColor = UIColor.Orange,
+            Frame = new CoreGraphics.CGRect(20,50,300,200)
+        };
+
+        private ZFPlayerControlView controlView = new ZFPlayerControlView();
+
+        private UIButton playBtn = new UIButton() {
+            BackgroundColor = UIColor.Red,
+            Frame = new CoreGraphics.CGRect(20,270,80,40)
+        };
+
+        private UIButton changeBtn = new UIButton() {
+            BackgroundColor = UIColor.Red,
+            Frame = new CoreGraphics.CGRect(120,270,80,40)
+        };
+
+        private UIButton nextBtn = new UIButton() {
+            BackgroundColor = UIColor.Red,
+            Frame = new CoreGraphics.CGRect(220,270,80,40)
+        };
+
+        private NSUrl[] assetURLs = new NSUrl[] {
+            new NSUrl ("https://www.apple.com/105/media/us/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/feature/iphone-x-feature-tpl-cc-us-20170912_1280x720h.mp4"),
+            new NSUrl("https://www.apple.com/105/media/cn/mac/family/2018/46c4b917_abfd_45a3_9b51_4e3054191797/films/bruce/mac-bruce-tpl-cn-2018_1280x720h.mp4"),
+            new NSUrl("https://www.apple.com/105/media/us/mac/family/2018/46c4b917_abfd_45a3_9b51_4e3054191797/films/peter/mac-peter-tpl-cc-us-2018_1280x720h.mp4"),
+        };
+
         public ViewController(IntPtr handle) : base(handle)
         {
         }
@@ -21,44 +44,42 @@ namespace IjkDemo
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            assetURLs = new NSUrl[] { 
-            new NSUrl ("http://tb-video.bdstatic.com/tieba-smallvideo/45_a68a54ff67c9db5bb05748e14c600a3b.mp4"),
-            new NSUrl("http://tb-video.bdstatic.com/tieba-smallvideo/68_20df3a646ab5357464cd819ea987763a.mp4")
-            };
-            playBtn = new UIButton();
-            changeBtn = new UIButton();
-            containerView = new UIView
-            {
-                BackgroundColor = UIColor.Orange
-            };
-            nextBtn = new UIButton();
-            playBtn.TouchDown += (sender, e) => {
-                //var pp = this.player as ZFPlayerController;
-                player.AssetURLs = this.assetURLs;
-                player.PlayTheIndex(0);
-            };
-            ZFIJKPlayerManager playerManager = new ZFIJKPlayerManager();
-            this.controlView = new ZFPlayerControlView();
-            this.View.BackgroundColor = UIColor.White;
+
             this.View.AddSubview(this.containerView);
-            this.containerView.AddSubview(this.playBtn);
+
+            this.playBtn.SetTitle("Play", UIControlState.Normal);
+            this.View.AddSubview(this.playBtn);
+
+            this.changeBtn.SetTitle("Change", UIControlState.Normal);
             this.View.AddSubview(this.changeBtn);
+
+            this.nextBtn.SetTitle("Next", UIControlState.Normal);
             this.View.AddSubview(this.nextBtn);
 
-            // ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
-            //    KSMediaPlayerManager *playerManager = [[KSMediaPlayerManager alloc] init];
-         
+            playBtn.TouchUpInside += PlayAction;
+            changeBtn.TouchUpInside += ChangeAction;
+            nextBtn.TouchUpInside += NextAction;
+
+            ZFAVPlayerManager playerManager = new ZFAVPlayerManager();
+
             /// 播放器相关
             this.player = ZFPlayerController.PlayerWithPlayerManager(playerManager, this.containerView);
             this.player.ControlView = this.controlView;
-
-
         }
 
-        public override void DidReceiveMemoryWarning()
+        void PlayAction(object sender, EventArgs e)
         {
-            base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
+            player.AssetURLs = this.assetURLs;
+            player.PlayTheIndex(0);
+        }
+
+        void ChangeAction(object sender, EventArgs e)
+        {
+        }
+
+        void NextAction(object sender, EventArgs e)
+        {
+            player.PlayTheNext();
         }
     }
 }

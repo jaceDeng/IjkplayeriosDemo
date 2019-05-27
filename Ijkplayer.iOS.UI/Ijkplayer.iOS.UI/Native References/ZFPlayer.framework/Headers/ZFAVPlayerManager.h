@@ -1,5 +1,5 @@
 //
-//  ZFPlayerLogManager.h
+//  ZFAVPlayerManager.h
 //  ZFPlayer
 //
 // Copyright (c) 2016年 任子丰 ( http://github.com/renzifeng )
@@ -22,23 +22,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#define ZFPlayerLog(format,...)  [ZFPlayerLogManager logWithFunction:__FUNCTION__ lineNumber:__LINE__ formatString:[NSString stringWithFormat:format, ##__VA_ARGS__]]
-
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+#import "ZFPlayerMediaPlayback.h"
+#import <AVFoundation/AVFoundation.h>
 
-@interface ZFPlayerLogManager : NSObject
+@interface ZFAVPlayerManager : NSObject <ZFPlayerMediaPlayback>
 
-// Set the log output status.
-+ (void)setLogEnable:(BOOL)enable;
-
-// Gets the log output status.
-+ (BOOL)getLogEnable;
-
-/// Get ZFPlayer version.
-+ (NSString *)version;
-
-// Log output method.
-+ (void)logWithFunction:(const char *)function lineNumber:(int)lineNumber formatString:(NSString *)formatString;
+@property (nonatomic, strong, readonly) AVURLAsset *asset;
+@property (nonatomic, strong, readonly) AVPlayerItem *playerItem;
+@property (nonatomic, strong, readonly) AVPlayer *player;
+@property (nonatomic, assign) NSTimeInterval timeRefreshInterval;
+/// 视频请求头
+@property (nonatomic, strong) NSDictionary *requestHeader;
 
 @end
